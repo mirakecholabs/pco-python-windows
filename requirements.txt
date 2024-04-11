@@ -1,0 +1,4 @@
+pco
+opencv-python
+matplotlib
+flask
