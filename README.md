@@ -23,91 +23,67 @@ src
 You will see that for some of the scripts it is already sufficient to install only the **pco** package
 
 The **src** folder contains all example scripts
-**CMakeLists.txt** is the main cmake file and **CMakePresets.json** contains already predefined presets for building debug and release,
-both on windows and linux platforms
-
-All examples are in the **src** subfolder.
-While **ImageViewer** is a small, Qt-based, GUI demo application, all other samples are one-file console programs.
-
-The **externals/pco** folder contains also a **CMakeLists.txt** file which handles the pco.cpp dependencies
 
 ## Sample Description
 
-### SimpleExample
+### example_simple
 
-This is a small console application which
-1. Opens a camera
-2. Sets an exposure time
-3. Records a sequence of images
-4. Saves the recorded images as tif files 
-   - as RGB for color cameras
-   - as BW for monochrome cameras
-   - the 16bit raw image is also saved
+This is a small console application showing how to work with PCO cameras
 
-**Note**: This way of saving image is only for a small amount of images / snapshots. 
-If you need to store lots of images as files, either consider using our file modes (like shown in the **FileModeExample**)  
-Or leverage any open source library for storing image files, e.g. OpenCV.
-
-### SimpleExample_FIFO
-
-This example is similar to **SimpleExample** but uses the ```pco::RecordMode::fifo``` instead of ```pco::RecordMode::sequence```,
-so that the images are automatically read in a sequential order.
-
-### SimpleExample_CamRam
-
-This example is similar to **SimpleExample** but adapted to the workflow of PCO cameras with internal memory. 
-Here you can only get a live image during record and read the actual images directly from the cameras internal memory when record is stopped.  
-
-For this we have two different modes:  
-- **```pco::RecordMode::camram_ring```** where the camera's memory is set up as a ring buffer (here we need to stop the recording manually)
-- **```pco::RecordMode::camram_segment```** where the camera's memory is set up sequentially (here the recording stops automatically)
-
-### ColorConvertExample
-
-This example is similar to **SimpleExample** but additionally shows how to apply a pseudo color lut to the images of monochrome PCO cameras.  
-Thus, this example also saves RGB images for monochrome cameras
-
-### FileModeExample
-
-This example shows how to use the ***file*** modes of our ```Camera``` class in order to directly stream the images from camera to file(s).  
-Once recorded, you can access the images in the same way as shown in all the other examples.  
-
-To keep this simple, the example just
-1. Opens a camera
-2. Sets an exposure time
-3. Let you input the destination path for the files
-   - During record it prints the number of already recorded images
-
-**Note**: We made the example using ```pco::RecordMode::tif```, but the workflow is of course valid for all our file modes: 
-- ```pco::RecordMode::tif```
-- ```pco::RecordMode::multitif```
-- ```pco::RecordMode::pcoraw```
-- ```pco::RecordMode::b16```
-- ```pco::RecordMode::dicom```
-- ```pco::RecordMode::multidicom```
-
-Especially when you want to record a lot of images, we recommend to use one of the multi-image file formats (multitif, pcoraw, multidicom)
-
-### MultiCameraExample
-
-This example shows how to work with two cameras in a very simple way.
-
-For both cameras the following is done: 
 1. Open a camera
-2. Set an exposure time
+2. Set a configuration
 3. Record a sequence of images
-4. Saves the recorded raw images as tif files 
+4. Get the first image and prints the timestamp if available
 
-**Note**: The example doesn't synchronize between the two cameras. 
-In many applications where multiple cameras are used, it is needed to sync the image acquisition.  
-For this we highly recommend using external trigger signals and configure the camera to use hardware trigger, 
-since this is the most accurate synchronization.
+### example_opencv
 
-### ImageViewer
+This is an example showing how to use opencv together with pco.python to create a live-view of a PCO camera
 
-This is a demo application with a graphical user interface which is based on the Qt framework.  
-- The top menu controls the recording, i.e here you can start and stop live view or record a sequence and navigate through this sequence
-- The middle part displays the image
-- The right side contains the most important settings of the camera configuration. While the exposure time can also be changed during record, all other settings require a stop and restart of the record.
+1. Open a camera
+2. Set a configuration
+3. Record images in ringbuffer
+4. Show latest image using OpenCV until *q* is pressed
 
-![imageviewer-gui](./doc/res/imageviewer_gui.png)
+### example_opencv_color
+This example is similar to **example_opencv**, but just uses OpenCV color mapping to show pseudo color images instead of monochrome ones.  
+
+Similar color conversions can also be done using PCO's color conversion library (see **example_colorconvert**)
+
+### example_opencv_color
+This example is similar to **example_opencv**.
+Additionally, the auto exposure feature is activated.  
+
+### example_matplotlib
+This is a very basic example, similar to the one on PyPI, showing how to display PCO images with matplotlib
+1. Open a camera
+2. Set a configuration
+3. Record one image
+4. Show the image using matplotlib
+
+### example_jupiter_notebook
+This is similar to **example_matplotlib**, but written as jupiter notebook
+
+### example_flask
+
+This example uses flask together with pco.python to set up a web-stream showing live images of a PCO camera
+
+### example_filemode
+This example shows all possible file modes for recording.  
+The file modes are relevant if you want to stream images from a camera directly to file(s).  
+Event though the images are in files, you can access them in the same way you would do for **sequence** or **ring buffer** mode, where the images are in the PCO RAM.
+
+### example_colorconvert
+
+This example shows how to configure the PCO internal color library to get either color images (if the camera is a color camera) or pseudo color images (if the camera is a monochrome camera)
+
+If you prefer using other libraries, e.g. OpenCV, for this, take a look at **example_opencv_color**
+
+### example_camram
+
+This example shows how to record and afterwards read images from PCO cameras with internal memory.  
+For this the recorder modes **camram segment** or **camram ring** can be used.
+
+### example dicam
+
+**Only relevant for pco.dicam cameras**  
+This example shows how to call the special intensifier functions to configure the intensifier parameters.
