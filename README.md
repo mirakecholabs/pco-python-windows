@@ -73,7 +73,7 @@ Event though the images are in files, you can access them in the same way you wo
 
 ### example_colorconvert
 
-This example shows how to configure the PCO internal color library to get either color images (if the camera is a color camera) or pseudo color images (if the camera is a monochrome camera).
+This example shows how to configure the PCO internal color library to get either color images (if the camera is a color camera) or pseudo color images (if the camera is a monochrome camera). A collection of supported LUT files can be found in the **src** directory.
 
 If you prefer using other libraries, e.g. OpenCV, for this, take a look at **example_opencv_color**.
 
