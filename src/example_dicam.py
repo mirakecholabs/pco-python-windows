@@ -27,10 +27,6 @@ def main():
         print(x)
         cam.sdk.set_intensified_mcp(1100, 10)
 
-        x = cam.sdk.get_intensified_loop_count()
-        print(x)
-        cam.sdk.set_intensified_loop_count(1)
-
         # --- Get camera description intensified ---
         x = cam.sdk.get_camera_description_ex('PCO_DESCRIPTION_INTENSIFIED')
         for k, v in x.items():
