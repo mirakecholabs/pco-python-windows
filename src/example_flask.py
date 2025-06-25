@@ -55,9 +55,8 @@ def make_web(cam):
         while True:
             start = time.perf_counter()
             cam.wait_for_new_image()
-            image, _ = cam.image(0xFFFFFFFF)
-            image_8bit = cv2.convertScaleAbs(image, alpha=0.003)
-            _, jpeg = cv2.imencode('.jpg', image_8bit)
+            image, _ = cam.image(0xFFFFFFFF, data_format="Mono8")
+            _, jpeg = cv2.imencode('.jpg', image)
             frame = jpeg.tobytes()
             print("{:2.5f} s".format(time.perf_counter() - start))
             yield (b'--frame\r\n' + b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
